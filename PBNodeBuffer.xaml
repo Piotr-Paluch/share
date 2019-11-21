@@ -1,0 +1,155 @@
+﻿<UserControl x:Class="Conveyor.Controls.PBNodeBuffer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:Conveyor.Controls"             
+             xmlns:clr="clr-namespace:System;assembly=mscorlib"             
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="100"
+             
+             Name="pb"
+             
+             RenderTransformOrigin="0,0"
+             HorizontalAlignment="Left"
+             VerticalAlignment="Top"
+             Background="Red"
+             >
+
+    <UserControl.Resources>
+        <clr:String x:Key="InBufferDescription">Kontenery w buforze: {0}</clr:String>
+        <clr:String x:Key="ReservedBufferDescription">Kontenery w drodze: {0}</clr:String>
+        <clr:String x:Key="BufferSizeDescription">Pojemność: {0}</clr:String>
+        <clr:String x:Key="InBufferPercentDescription">Zajętość: {0:P0}</clr:String>
+        <clr:String x:Key="InBuffer_Reserved_PercentDescription">Obłożenie w przyszłości: {0:P0}</clr:String>
+        
+        <clr:Double x:Key="SlotHeight">40</clr:Double>
+        <clr:Double x:Key="SlotWidth">90</clr:Double>
+    </UserControl.Resources>
+
+    <!--<UserControl.RenderTransform>
+        <TransformGroup>
+            <ScaleTransform ScaleX="1" ScaleY="1"/>
+            <SkewTransform AngleX="0" AngleY="0"/>
+            <RotateTransform Angle="270" />
+            <TranslateTransform x:Name="UserControlToolTipXY" X="0" Y="0"/>
+        </TransformGroup>
+    </UserControl.RenderTransform>-->
+
+
+        <!--<Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                <SkewTransform AngleX="0" AngleY="0"/>
+                <RotateTransform Angle="270" CenterX="0" CenterY="0"/>
+                <TranslateTransform X="0" Y="{StaticResource SlotHeight}"/>
+            </TransformGroup>
+        </Grid.RenderTransform>-->
+
+        <!--<Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>-->
+        <!--<Rectangle Fill="Black"></Rectangle>-->
+
+        <!--<Image Name="imgOverflow" 
+               Visibility="Hidden"
+               Stretch="Uniform" 
+               Margin="3"
+               ></Image>-->
+        
+        <ListBox 
+            
+            Name="lbContainers"            
+            ItemsSource="{Binding ElementName=pb, Path=ContainerItems}"                        
+            Background="SeaGreen" 
+            BorderThickness="2"
+            BorderBrush="Black"
+                 >
+
+            <!--<ListBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <SkewTransform AngleX="0" AngleY="0"/>
+                    <RotateTransform Angle="0" CenterX="0" CenterY="0"/>
+                    <TranslateTransform X="0" Y="{StaticResource SlotHeight}"/>
+                </TransformGroup>
+            </ListBox.RenderTransform>-->
+
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <VirtualizingStackPanel IsVirtualizing="True" Orientation="Horizontal"
+                                  VirtualizationMode="Recycling" />
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Margin" Value="1,0,0,0"></Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <ContentPresenter>
+
+                                <!--<ContentPresenter.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <SkewTransform AngleX="0" AngleY="0"/>
+                    <RotateTransform Angle="270" CenterX="0" CenterY="0"/>
+                    <TranslateTransform X="0" Y="0"/>
+                </TransformGroup>
+            </ContentPresenter.RenderTransform>-->
+
+                            </ContentPresenter>
+                        </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.Resources>
+                
+                <DataTemplate DataType="{x:Type local:ContainerSlot}">
+                    <!--<StackPanel Background="AliceBlue">
+                        <TextBlock Text="TEST COMPONENT" Foreground="{Binding Background}" />
+                    </StackPanel>-->
+                        <Rectangle Fill="{Binding Background}" Width="{StaticResource SlotWidth}" Height="{StaticResource SlotHeight}" RadiusX="2" RadiusY="2" Stroke="Black" StrokeThickness="2" ></Rectangle>
+                </DataTemplate>
+                
+                <!--<DataTemplate DataType="{x:Type local:ContainerSlotLight}">
+                    <StackPanel Background="Red">
+                        <TextBlock Text="TEST COMPONENT" Foreground="Blue" />
+                    </StackPanel>
+                </DataTemplate>-->
+                
+            </ListBox.Resources>
+
+            <ListBox.ToolTip>
+                <ToolTip DataContext="{Binding Path=PlacementTarget.Parent, RelativeSource={x:Static RelativeSource.Self}}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding InBuffer, StringFormat={StaticResource InBufferDescription}}"></TextBlock>
+                        <TextBlock Text="{Binding ReservedBuffer, StringFormat={StaticResource ReservedBufferDescription}}"></TextBlock>
+                        <TextBlock Text="{Binding BufferSize, StringFormat={StaticResource BufferSizeDescription}}"></TextBlock>
+                        <TextBlock Text="{Binding InBufferPercent, StringFormat={StaticResource InBufferPercentDescription}}"></TextBlock>
+                        <TextBlock Text="{Binding InBufferPercent, StringFormat={StaticResource InBuffer_Reserved_PercentDescription}}"></TextBlock>
+                    </StackPanel>
+                </ToolTip>
+                <!--<ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="{Binding ElementName=pb, Path=InBuffer, StringFormat={StaticResource InBufferDescription}}"></TextBlock>
+                        <TextBlock Text="{Binding ElementName=pb, Path=ReservedBuffer, StringFormat={StaticResource ReservedBufferDescription}}"></TextBlock>
+                        <TextBlock Text="{Binding ElementName=pb, Path=BufferSize, StringFormat={StaticResource BufferSizeDescription}}"></TextBlock>
+                        <TextBlock Text="{Binding ElementName=pb, Path=InBufferPercent, StringFormat={StaticResource InBufferPercentDescription}}"></TextBlock>
+                        <TextBlock Text="{Binding ElementName=pb, Path=InBufferPercent, StringFormat={StaticResource InBuffer_Reserved_PercentDescription}}"></TextBlock>
+                    </StackPanel>
+                </ToolTip>-->
+            </ListBox.ToolTip>
+
+        </ListBox>
+        
+</UserControl>
