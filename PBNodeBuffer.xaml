@@ -14,7 +14,11 @@
              RenderTransformOrigin="0,0"
              HorizontalAlignment="Left"
              VerticalAlignment="Top"
-             Background="Red"
+             Background="Gray"
+             BorderBrush="White"
+             BorderThickness="0"
+             
+             MouseDown="Pb_MouseDown"
              >
 
     <UserControl.Resources>
@@ -23,7 +27,7 @@
         <clr:String x:Key="BufferSizeDescription">Pojemność: {0}</clr:String>
         <clr:String x:Key="InBufferPercentDescription">Zajętość: {0:P0}</clr:String>
         <clr:String x:Key="InBuffer_Reserved_PercentDescription">Obłożenie w przyszłości: {0:P0}</clr:String>
-        
+
         <clr:Double x:Key="SlotHeight">40</clr:Double>
         <clr:Double x:Key="SlotWidth">90</clr:Double>
     </UserControl.Resources>
@@ -38,7 +42,7 @@
     </UserControl.RenderTransform>-->
 
 
-        <!--<Grid.RenderTransform>
+    <!--<Grid.RenderTransform>
             <TransformGroup>
                 <ScaleTransform ScaleX="1" ScaleY="1"/>
                 <SkewTransform AngleX="0" AngleY="0"/>
@@ -47,27 +51,29 @@
             </TransformGroup>
         </Grid.RenderTransform>-->
 
-        <!--<Grid.ColumnDefinitions>
+    <!--<Grid.ColumnDefinitions>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="32"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>-->
-        <!--<Rectangle Fill="Black"></Rectangle>-->
+    <!--<Rectangle Fill="Black"></Rectangle>-->
 
-        <!--<Image Name="imgOverflow" 
+    <!--<Image Name="imgOverflow" 
                Visibility="Hidden"
                Stretch="Uniform" 
                Margin="3"
                ></Image>-->
-        
-        <ListBox 
-            
+    <Grid>
+        <TextBlock Visibility="Visible" Text="LEWA" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <ListBox             
             Name="lbContainers"            
+            Padding="0,5,0,5"
+            Margin="0,30,0,0"
             ItemsSource="{Binding ElementName=pb, Path=ContainerItems}"                        
-            Background="SeaGreen" 
-            BorderThickness="2"
+            Background="LightGray" 
+            BorderThickness="3"
             BorderBrush="Black"
                  >
 
@@ -80,23 +86,23 @@
                 </TransformGroup>
             </ListBox.RenderTransform>-->
 
-        <ListBox.ItemsPanel>
-            <ItemsPanelTemplate>
-                <VirtualizingStackPanel IsVirtualizing="True" Orientation="Horizontal"
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsVirtualizing="True" Orientation="Horizontal"
                                   VirtualizationMode="Recycling" />
-            </ItemsPanelTemplate>
-        </ListBox.ItemsPanel>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
 
-        <ListBox.ItemContainerStyle>
+            <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
-                    <Setter Property="IsEnabled" Value="False"/>
-                    <Setter Property="Margin" Value="1,0,0,0"></Setter>
+                    <Setter Property="IsEnabled" Value="True"/>
+                    <Setter Property="Margin" Value="0,0,0,0"></Setter>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                            <ContentPresenter>
+                                <ContentPresenter>
 
-                                <!--<ContentPresenter.RenderTransform>
+                                    <!--<ContentPresenter.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="1" ScaleY="1"/>
                     <SkewTransform AngleX="0" AngleY="0"/>
@@ -105,28 +111,31 @@
                 </TransformGroup>
             </ContentPresenter.RenderTransform>-->
 
-                            </ContentPresenter>
-                        </ControlTemplate>
+                                </ContentPresenter>
+                            </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
 
             <ListBox.Resources>
-                
+
                 <DataTemplate DataType="{x:Type local:ContainerSlot}">
                     <!--<StackPanel Background="AliceBlue">
                         <TextBlock Text="TEST COMPONENT" Foreground="{Binding Background}" />
                     </StackPanel>-->
-                        <Rectangle Fill="{Binding Background}" Width="{StaticResource SlotWidth}" Height="{StaticResource SlotHeight}" RadiusX="2" RadiusY="2" Stroke="Black" StrokeThickness="2" ></Rectangle>
+                    <Rectangle Fill="{Binding Background}" 
+                           Width="{Binding Width}" Height="{Binding Height}" Margin="{Binding Margin}" 
+                           RadiusX="2" RadiusY="2" 
+                           Stroke="Black" StrokeThickness="3" ></Rectangle>
                 </DataTemplate>
-                
+
                 <!--<DataTemplate DataType="{x:Type local:ContainerSlotLight}">
                     <StackPanel Background="Red">
                         <TextBlock Text="TEST COMPONENT" Foreground="Blue" />
                     </StackPanel>
                 </DataTemplate>-->
-                
+
             </ListBox.Resources>
 
             <ListBox.ToolTip>
@@ -151,5 +160,5 @@
             </ListBox.ToolTip>
 
         </ListBox>
-        
+    </Grid>
 </UserControl>

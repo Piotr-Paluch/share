@@ -23,6 +23,14 @@ namespace Conveyor.Controls
     public interface IContainerSlot
     {
         SlotState SlotState { get; set; }
+        double Width { get; set; }
+        double Height { get; set; }
+
+        double LeftMargin { get; set; }
+        double RightMargin { get; set; }
+        Thickness Margin { get; }
+
+        Brush Background { get; set; }
     }
 
     public abstract class ContainerSlotBase 
@@ -30,6 +38,14 @@ namespace Conveyor.Controls
         INotifyPropertyChanged
     {
         SlotState slotState = SlotState.Free;
+
+        public double Width { get; set; } = 160;
+        public double Height { get; set; } = 50;
+
+        public double LeftMargin { get; set; } = 10;
+        public double RightMargin { get; set; } = 30;
+
+        public Thickness Margin => new Thickness(LeftMargin, 0, RightMargin, 0);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -46,6 +62,17 @@ namespace Conveyor.Controls
             }
         }
 
+        Brush background;
+        public Brush Background
+        {
+            get { return background; }
+            set
+            {
+                background = value;
+                OnPropertyChanged();
+            }
+        }
+
         protected virtual void Update() { }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -58,21 +85,10 @@ namespace Conveyor.Controls
     {
         public Brush FreeColor { get; set; } = Brushes.White;
 
-        Brush background;
 
         public ContainerSlot()
         {
-            background = FreeColor;
-        }
-
-        public Brush Background
-        {
-            get { return background; }
-            set
-            {
-                background = value;
-                OnPropertyChanged();
-            }
+            Background = FreeColor;
         }
 
         public int SlotStateId => (int)SlotState;
@@ -260,7 +276,7 @@ namespace Conveyor.Controls
         public bool IsFull => this.InBuffer >= this.BufferSize;
 
 
-
+        Random rnd = new Random();
 
         void BufferSizeChanged()
         {
@@ -268,6 +284,12 @@ namespace Conveyor.Controls
             for (int i = 0; i < BufferSize; i++)
             {
                 ContainerItems.Add(new ContainerSlot());
+
+                
+                //if(rnd.Next(0, 3) == 0)
+                //{
+                //    ContainerItems.Last().Background = Brushes.Transparent;
+                //}
             }
 
             //Height = lbContainers.Height;
@@ -361,5 +383,10 @@ namespace Conveyor.Controls
         #region DependencyProperty
 
         #endregion
+
+        private void Pb_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //ContainerItems.Add(new ContainerSlot());
+        }
     }
 }
